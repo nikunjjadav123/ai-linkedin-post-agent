@@ -17,6 +17,10 @@ node_modules/
 build/
 dist/
 
+# Build files
+*.egg-info/
+
+
 # OS files
 .DS_Store
 Thumbs.db
@@ -28,6 +32,12 @@ Thumbs.db
 # Secrets
 .env
 .env.*
+.env
+.env.local
+.env.production
+
+# allow example file
+!.env.example
 
 # Misc
 *.swp

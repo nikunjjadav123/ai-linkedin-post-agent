@@ -69,14 +69,6 @@ Create a `.env` file inside the backend folder.
 
 We have provided a `.env.example` file to help you understand the required environment variables.
 
-```
-OPENAI_API_KEY=your_key
-LINKEDIN_TOKEN=your_token
-PERSON_URN=urn:li:person:xxxx
-MODEL_NAME=llama-3.1-8b-instant
-GROQ_API_KEY=your_groq_key
-```
-
 ---
 
 ## 🤖 Model Information
