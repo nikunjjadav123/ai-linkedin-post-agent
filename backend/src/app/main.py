@@ -1,0 +1,42 @@
+from app.workflows.linkedin_workflow import app_graph
+from fastapi import FastAPI
+from app.routes.post_routes import generate_router,publish_router
+
+app = FastAPI()
+
+app.include_router(generate_router)
+app.include_router(publish_router)
+# def main():
+
+#     graph = app_graph()
+
+#     result = graph.invoke({
+#         "topic": "Why Human-in-the-Loop is Important in AI Systems"
+#     })
+
+#     linkedin_content = result.get("linkedin_post", "")
+#     score = result.get("score", 0)
+#     status = result.get("status", "failed")
+
+#     print("*" * 50, f"LinkedIn Post with score : {score} Start", "*" * 50)
+
+#     print("LinkedIn Post:\n", linkedin_content, "\n\n")
+
+#     print("*" * 50, "LinkedIn Post End", "*" * 50)
+
+#     if status == "success":
+#         print(f"\n✅ {result.get('message')}")
+#         print(f"Post ID: {result.get('linkedin_post_id')}")
+
+#     else:
+#         message = result.get("message", "")
+
+#         try:
+#             error_data = json.loads(message)
+#             print(f"\n❌ Error: {error_data.get('message')}")
+#         except Exception:
+#             print(f"\n❌ Error: {message}")
+
+
+# if __name__ == "__main__":
+#     main()

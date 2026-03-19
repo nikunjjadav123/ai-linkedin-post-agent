@@ -1,0 +1,31 @@
+Features
+
+1) Pydantic Schema use 
+2) Utils functions
+3) FAST API Call
+4) Multi-Platform Generator
+5) AI Content Critic
+6) Hook generator
+7) Tone selection
+8) Feedback-based evaluation
+9) Hashtag generator
+
+
+Future Topics
+
+ "topic": "Why Agentic AI is the future of automation"
+ "topic": "Why Agentic AI is the future of automation"
+ "topic": "Difference between RAG and fine-tuning in LLMs"
+ "topic": "Difference between RAG and fine-tuning in LLMs"
+ "topic": "Building production-ready AI systems with FastAPI and LangGraph"
+ "topic": "My journey from PHP to Python and GenAI"
+ "topic": "How I built my first AI agent using LangGraph"
+ "topic": "How I built my first AI agent using LangGraph"
+ "topic": "Top skills needed to become an AI engineer in 2026"
+ "topic": "What I learned while building real-world AI projects"
+ "topic": "AI will not replace developers, but developers using AI will"
+ "topic": "Why most AI projects fail in production"
+ "topic": "From Chatbots to AI Agents: The next evolution"
+ "topic": "How I built an AI LinkedIn Post Generator with LangGraph and Human-in-the-Loop approval"
+ "topic": "Explain LangGraph iteration workflows with a real-world example"
+ "topic": "Explain LangGraph iteration workflows with a real-world example"
