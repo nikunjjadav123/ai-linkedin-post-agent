@@ -1,6 +1,0 @@
-Metadata-Version: 2.4
-Name: linkedin-agent
-Version: 0.1.0
-Summary: AI LinkedIn Post Generator using LangGraph
-Author: Your Name
-Requires-Python: >=3.10
