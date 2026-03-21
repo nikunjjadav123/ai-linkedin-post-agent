@@ -12,4 +12,4 @@ def evaluate_linkedin_post(state:LinkedInState)-> LinkedInState:
     response = get_llm().invoke(formatted_prompt)
     parsed = json.loads(response.content)
 
-    return { 'score':parsed["score"] , 'feedback':parsed["feedback"] }
+    return { 'linkedin_post':parsed["linkedin_post"],'score':parsed["score"],'feedback':parsed["feedback"] }

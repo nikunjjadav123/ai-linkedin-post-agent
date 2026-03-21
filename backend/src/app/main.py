@@ -1,11 +1,15 @@
-from app.workflows.linkedin_workflow import app_graph
 from fastapi import FastAPI
-from app.routes.post_routes import generate_router,publish_router
+from app.routes.post_routes import router
 
-app = FastAPI()
+app = FastAPI(
+    title="LinkedIn Content Automation API",
+    description="AI-powered LinkedIn content generation, evaluation, and publishing system",
+    version="1.0.0"
+)
 
-app.include_router(generate_router)
-app.include_router(publish_router)
+# Include single unified router
+app.include_router(router)
+
 # def main():
 
 #     graph = app_graph()

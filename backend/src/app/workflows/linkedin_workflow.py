@@ -21,7 +21,7 @@ def app_graph():
     graph.add_edge("Generate Hooks Based On Topic","Find Best Hook Based On Score")
     graph.add_edge("Find Best Hook Based On Score","Generate LinkedIn Post Based on Best Hook")
     graph.add_edge("Generate LinkedIn Post Based on Best Hook","Evaluate LinkedIn Post")
-    graph.add_conditional_edges("Evaluate LinkedIn Post",decide_approve_improve,{"approve": "Post LinkedIn After Approve","need_improvement":"Generate LinkedIn Post Based on Best Hook"})
+    graph.add_conditional_edges("Evaluate LinkedIn Post",decide_approve_improve,{"approve": END,"need_improvement":"Generate LinkedIn Post Based on Best Hook"})
 
     workflow = graph.compile()
 

@@ -9,4 +9,4 @@ def generate_linkedin_post(state:LinkedInState)-> LinkedInState:
     )
     response_linkedin_post = get_llm().invoke(formatted_prompt)
     
-    return { 'linkedin_post':response_linkedin_post.content }
+    return { 'linkedin_post':response_linkedin_post.content}

@@ -1,23 +1,24 @@
-from app.prompts.find_best_linkedin_hook_prompt import find_best_linkedin_hook_prompt
 from app.schemas.state import LinkedInState
-from app.services import get_llm
 from app.schemas.schema import HooksResponse
 from langchain_core.output_parsers import PydanticOutputParser
 
-def find_best_linkedin_hook(state:LinkedInState)-> LinkedInState:
 
-    
-    formatted_prompt = find_best_linkedin_hook_prompt.format_messages(hooks= state["hooks"])
-    response = get_llm().invoke(formatted_prompt)
+def find_best_linkedin_hook(state: LinkedInState) -> LinkedInState:
 
-    parser = PydanticOutputParser(pydantic_object=HooksResponse)
+    hooks = state.get("hooks", [])
 
-    parsed = parser.parse(response.content)
+    if not hooks:
+        return {
+            "the_best_hook": "",
+            "score": 0
+        }
 
-    ranked_hooks = parsed.hooks
-
-    best_hook = ranked_hooks[0].hook if ranked_hooks else ""
+    best_hook_obj = max(
+        hooks,
+        key=lambda x: (x.score, len(x.hook))
+    )
 
     return {
-        "the_best_hook": best_hook
+        "the_best_hook": best_hook_obj.hook,
+        "score": best_hook_obj.score
     }

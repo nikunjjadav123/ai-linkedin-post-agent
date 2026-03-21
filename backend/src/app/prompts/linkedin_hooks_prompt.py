@@ -24,9 +24,21 @@ Hook styles:
 4. Pain point
 5. Unexpected insight
 
-Return only JSON:
+IMPORTANT RULES:
+- Return ONLY valid JSON
+- Use DOUBLE quotes (") only — NEVER use single quotes (')
+- Do NOT include any explanation, text, or markdown
+- Do NOT include trailing commas
+- Ensure JSON is parsable with json.loads()
+
+Format:
 {{
-    "hooks": ["...", "...", "...", "...", "..."]
+  "hooks": [
+    {{
+      "hook": "string",
+      "score": number
+    }}
+  ]
 }}
 """)
         ]
