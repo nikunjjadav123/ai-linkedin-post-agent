@@ -4,7 +4,7 @@ import requests
 import os
 
 
-def post_linkedin_after_approve(linkedin_post: str):
+def post_to_linkedin_api(linkedin_post: str):
 
         url = "https://api.linkedin.com/v2/ugcPosts"
 

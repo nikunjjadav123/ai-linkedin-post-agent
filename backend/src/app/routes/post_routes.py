@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from app.workflows.linkedin_workflow import app_graph
-from app.nodes.publish_post import linkedin_post_api
+from app.nodes import post_linkedin_after_approve
 from app.schemas.schema import PostResponseSchema,PublishResponse,PublishRequest,PostRequestSchema
 
 generate_router = APIRouter(
@@ -31,7 +31,7 @@ def generate_post(data: PostRequestSchema):
 @publish_router.post("/",response_model=PublishResponse)
 def publish_post(data: PublishRequest):
     
-    result = linkedin_post_api({
+    result = post_linkedin_after_approve({
         "linkedin_post": data.linkedin_post
     })
     

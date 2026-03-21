@@ -1,10 +1,12 @@
 from app.schemas.state import LinkedInState
-from app.services import post_linkedin_after_approve
+from app.services import post_to_linkedin_api
 import requests
 
-def linkedin_post_api(state: LinkedInState) -> LinkedInState:
-    
-        result = post_linkedin_after_approve(state["linkedin_post"])
+def post_linkedin_after_approve(state: LinkedInState) -> LinkedInState:
+
+        linkedin_post = state["linkedin_post"]
+
+        result = post_to_linkedin_api(linkedin_post)
 
         try:
 

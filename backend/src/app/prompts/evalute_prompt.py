@@ -4,17 +4,19 @@ evalute_prompt = ChatPromptTemplate(
         [
             ("system","You are an linkedin quality evaluator."),
             ("human", """
-                Score the following LinkedIn post from 1-10.
+                Score the following LinkedIn post from 1-10 AND give improvement feedback.
 
                 Rules:
-                - Return ONLY a number
-                - Do NOT add explanation
-                - Do NOT add text
+                - Return JSON only
+                - Format:
+                {{
+                "score": <number>,
+                "feedback": "<what to improve>"
+                }}
 
                 Post:
                 {linkedin_post}
-                """
-            )
+                """)
         ]
         
     )

@@ -5,8 +5,8 @@ from app.services import get_llm
 def generate_linkedin_post(state:LinkedInState)-> LinkedInState:
 
     formatted_prompt = generate_prompt.format_messages(
-        topic=state["topic"]
+        the_best_hook=state["the_best_hook"]
     )
     response_linkedin_post = get_llm().invoke(formatted_prompt)
     
-    return { **state, 'linkedin_post':response_linkedin_post.content }
+    return { 'linkedin_post':response_linkedin_post.content }

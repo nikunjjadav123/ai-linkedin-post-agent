@@ -1,5 +1,5 @@
 from pydantic import BaseModel,Field
-from typing import Optional
+from typing import Optional,List
 
 class PostRequestSchema(BaseModel):
     topic: str
@@ -19,3 +19,11 @@ class PublishResponse(BaseModel):
     message: str
     linkedin_post_id: Optional[str] = None
     status_code: Optional[int] = None
+
+
+class HookScore(BaseModel):
+    hook: str
+    score: int
+
+class HooksResponse(BaseModel):
+    hooks: List[HookScore]
