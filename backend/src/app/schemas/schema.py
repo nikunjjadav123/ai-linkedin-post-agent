@@ -53,6 +53,10 @@ class PublishRequest(BaseSchema):
         min_length=10,
         description="Final LinkedIn post content to publish"
     )
+    hashtags: Optional[List[str]] = Field(
+        default=None,
+        description="List of hashtags to append to the post"
+    )
 
 
 class PublishResponse(BaseSchema):
@@ -112,4 +116,22 @@ class HookInput(BaseSchema):
         ...,
         min_length=5,
         description="Selected hook for post generation"
+    )
+
+
+# -------------------------------
+# Hashtags Schemas
+# -------------------------------
+class HashtagsRequest(BaseSchema):
+    linkedin_post: str = Field(
+        ...,
+        min_length=10,
+        description="LinkedIn post content to generate hashtags for"
+    )
+
+
+class HashtagsResponse(BaseSchema):
+    hashtags: List[str] = Field(
+        ...,
+        description="List of generated hashtags for the post"
     )

@@ -5,6 +5,7 @@ from app.nodes import (
     find_best_linkedin_hook,
     generate_linkedin_post,
     generate_linkedin_hooks,
+    generate_hashtags,
 )
 
 from app.schemas.schema import (
@@ -15,6 +16,8 @@ from app.schemas.schema import (
     PublishRequest,
     HookRequest,
     HooksResponse,
+    HashtagsRequest,
+    HashtagsResponse,
 )
 
 # -------------------------------
@@ -103,13 +106,32 @@ def evaluate_post(data: PublishRequest):
 
 
 # -------------------------------
-# 5. Publish Post
+# 5. Generate Hashtags
+# -------------------------------
+@router.post("/post/hashtags", response_model=HashtagsResponse)
+def get_hashtags(data: HashtagsRequest):
+    try:
+        result = generate_hashtags({
+            "linkedin_post": data.linkedin_post
+        })
+
+        return HashtagsResponse(
+            hashtags=result.get("hashtags", [])
+        )
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Hashtag generation failed: {str(e)}")
+
+
+# -------------------------------
+# 6. Publish Post
 # -------------------------------
 @router.post("/post/publish", response_model=PublishResponse)
 def publish_post(data: PublishRequest):
     try:
         result = post_linkedin_after_approve({
-            "linkedin_post": data.linkedin_post
+            "linkedin_post": data.linkedin_post,
+            "hashtags": data.hashtags
         })
 
         return PublishResponse(**result)

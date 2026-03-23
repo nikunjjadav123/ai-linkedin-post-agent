@@ -3,10 +3,11 @@ from app.services import post_to_linkedin_api
 import requests
 
 def post_linkedin_after_approve(state: LinkedInState) -> LinkedInState:
-
+        
         linkedin_post = state["linkedin_post"]
-
-        result = post_to_linkedin_api(linkedin_post)
+        hashtags = state.get("hashtags")
+        
+        result = post_to_linkedin_api(linkedin_post, hashtags=hashtags)
 
         try:
 

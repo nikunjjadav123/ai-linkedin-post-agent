@@ -2,28 +2,35 @@ from dotenv import load_dotenv
 load_dotenv()
 import requests
 import os
+from typing import List, Optional
 
 
-def post_to_linkedin_api(linkedin_post: str):
+def post_to_linkedin_api(linkedin_post: str, hashtags: Optional[List[str]] = None):
 
         url = "https://api.linkedin.com/v2/ugcPosts"
 
         access_token = os.getenv("LINKEDIN_ACCESS_TOKEN")
         person_id = os.getenv("LINKEDIN_PERSON_ID")
 
+        # Append hashtags to post if provided
+        post_content = linkedin_post
+        if hashtags:
+            hashtag_text = " ".join(tag if tag.startswith("#") else f"#{tag}" for tag in hashtags)
+            post_content = f"{linkedin_post}\n\n{hashtag_text}"
+
         headers = {
             "Authorization": f"Bearer {access_token}",
             "LinkedIn-Version": "202307",
             "Content-Type": "application/json"
         }
-        
+
         payload = {
         "author": f"urn:li:person:{person_id}",
         "lifecycleState": "PUBLISHED",
         "specificContent": {
             "com.linkedin.ugc.ShareContent": {
                 "shareCommentary": {
-                    "text": linkedin_post
+                    "text": post_content
                 },
                 "shareMediaCategory": "NONE"
             }
@@ -33,5 +40,5 @@ def post_to_linkedin_api(linkedin_post: str):
         }
     }
         response = requests.post(url, headers=headers, json=payload, timeout=10)
-        
+
         return response
