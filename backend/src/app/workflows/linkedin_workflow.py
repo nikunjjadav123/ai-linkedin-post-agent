@@ -1,5 +1,6 @@
 from app.schemas.state import LinkedInState
 from langgraph.graph import StateGraph,START,END
+from langgraph.checkpoint.memory import MemorySaver
 from app.nodes import generate_linkedin_post
 from app.nodes import evaluate_linkedin_post
 from app.nodes import generate_linkedin_hooks
@@ -7,6 +8,8 @@ from app.nodes import find_best_linkedin_hook
 from app.nodes import post_linkedin_after_approve
 from app.nodes import generate_hashtags
 from app.workflows.decision import decide_approve_improve
+
+memory = MemorySaver()
 
 def app_graph():
 
@@ -24,8 +27,12 @@ def app_graph():
     graph.add_edge("Find Best Hook Based On Score","Generate LinkedIn Post Based on Best Hook")
     graph.add_edge("Generate LinkedIn Post Based on Best Hook","Evaluate LinkedIn Post")
     graph.add_edge("Evaluate LinkedIn Post","Generate Hashtags")
-    graph.add_conditional_edges("Generate Hashtags",decide_approve_improve,{"approve": END,"need_improvement":"Generate LinkedIn Post Based on Best Hook"})
+    graph.add_conditional_edges("Generate Hashtags",decide_approve_improve,{"approve": "Post LinkedIn After Approve","need_improvement":"Generate LinkedIn Post Based on Best Hook"})
+    graph.add_edge("Post LinkedIn After Approve", END)
 
-    workflow = graph.compile()
+    workflow = graph.compile(
+        checkpointer=memory,
+        interrupt_before=["Generate LinkedIn Post Based on Best Hook", "Post LinkedIn After Approve"]
+    )
 
     return workflow

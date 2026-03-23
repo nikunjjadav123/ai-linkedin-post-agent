@@ -9,35 +9,22 @@ const api = axios.create({
   },
 });
 
-export const generateHooks = async (topic: string) => {
-  const { data } = await api.post('/hooks', { topic });
-  return data.hooks;
-};
+export interface WorkflowResponse {
+  thread_id: string;
+  state: any;
+  next_node: string[];
+  is_finished: boolean;
+}
 
-export const findBestHook = async (hooks: any[]) => {
-  const { data } = await api.post('/best-hook', { hooks });
+export const runWorkflow = async (topic: string): Promise<WorkflowResponse> => {
+  const { data } = await api.post('/workflow/run', { topic });
   return data;
 };
 
-export const generatePost = async (hook: string) => {
-  const { data } = await api.post('/post/generate', { hook });
-  return data;
-};
-
-export const evaluatePost = async (linkedinPost: string) => {
-  const { data } = await api.post('/post/evaluate', { linkedin_post: linkedinPost });
-  return data;
-};
-
-export const generateHashtags = async (linkedinPost: string) => {
-  const { data } = await api.post('/post/hashtags', { linkedin_post: linkedinPost });
-  return data.hashtags;
-};
-
-export const publishPost = async (linkedinPost: string, hashtags: string[]) => {
-  const { data } = await api.post('/post/publish', { 
-    linkedin_post: linkedinPost, 
-    hashtags 
+export const resumeWorkflow = async (threadId: string, updates: Record<string, any>): Promise<WorkflowResponse> => {
+  const { data } = await api.post('/workflow/resume', { 
+    thread_id: threadId, 
+    updates 
   });
   return data;
 };

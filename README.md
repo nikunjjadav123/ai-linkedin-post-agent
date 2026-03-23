@@ -21,53 +21,48 @@ This project demonstrates **agentic workflows using LangGraph**, structured AI p
 
 ## 🏗️ Architecture
 
-Client / API Consumer → FastAPI Backend → LangGraph Workflow → LinkedIn API
+React Frontend (Vite) ↔ FastAPI Backend ↔ LangGraph Stateful Workflow (with MemorySaver) ↔ LinkedIn API
 
 ---
 
 ## 📁 Project Structure
 
 ```
-backend/
+.
+├── backend/            # FastAPI & LangGraph logic
+├── frontend/           # React + Tailwind CSS + Vite
+└── README.md
 ```
 
 ---
 
-## ⚙️ Installation
+## ⚙️ Installation & Running
 
-### 1️⃣ Clone the Repository
+### 1️⃣ Backend Setup
 
-```
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name/backend
-```
-
-### 2️⃣ Create Virtual Environment
-
-```
+```bash
+cd backend
 python -m venv venv
-source venv/bin/activate   # Windows: venv\Scripts\activate
-```
-
-### 3️⃣ Install Dependencies
-
-```
+source venv/bin/activate
 pip install -r requirements.txt
+# Run the server
+uvicorn src.app.main:app --reload --port 8000
 ```
 
-### 4️⃣ Run the Server
+### 2️⃣ Frontend Setup
 
-```
-uvicorn app.main:app --reload
+```bash
+cd frontend
+npm install
+# Run the development server
+npm run dev
 ```
 
 ---
 
 ## 🔐 Environment Variables
 
-Create a `.env` file inside the backend folder.
-
-We have provided a `.env.example` file to help you understand the required environment variables.
+Create a `.env` file inside the `backend` folder based on `.env.example`.
 
 ---
 
@@ -80,37 +75,31 @@ We have provided a `.env.example` file to help you understand the required envir
 
 ## 🔁 Workflow (LangGraph)
 
-```
-Topic 
-  ↓
-Hook Generation
-  ↓
-Post Generation
-  ↓
-Evaluation
-  ↓
-Human Approval (HITL)
-  ↓
-Publish to LinkedIn
-```
+The workflow is stateful and uses **Human-in-the-Loop (HITL)** interrupts:
+
+1. **Topic Input** (User)
+2. **Hook Generation** (AI)
+3. **Interrupt 1:** User reviews/edits Hooks.
+4. **Post Generation** (AI)
+5. **Evaluation & Feedback** (AI)
+6. **Hashtag Generation** (AI)
+7. **Interrupt 2:** User reviews/edits Post Content & Hashtags.
+8. **Publishing** (AI)
 
 ---
 
 ## 🧩 Tech Stack
 
-* Python, FastAPI
-* LangGraph, LangChain
-* Groq (LLM Provider)
-* LinkedIn REST API
-* OAuth 2.0
+* **Frontend:** React, Vite, Tailwind CSS, Axios, Lucide Icons
+* **Backend:** Python, FastAPI, LangGraph, LangChain
+* **LLM:** Groq
+* **API:** LinkedIn REST API (OAuth 2.0)
 
 ---
 
 ## 🚀 Future Enhancements
 
-* Add frontend UI for approval workflow
 * Multi-platform posting (Twitter, Instagram)
-* Prompt optimization loop
 * Analytics dashboard
 * Docker-based deployment
 
@@ -126,18 +115,22 @@ Publish to LinkedIn
 
 ## 🏆 Highlights
 
-* Agentic AI workflow design
-* Human-in-the-Loop system
-* Real-world API integration
-* Production-style backend architecture
+* **Stateful Agentic AI:** Uses LangGraph `MemorySaver` to persist conversation threads.
+* **Full-Stack HITL:** Interactive approval flow spanning React and Python.
+* **Modern UI:** Clean, responsive design built with Tailwind CSS.
 
 ---
 
 ## 📌 Important Notes
 
-* This project currently focuses on backend and workflow logic.
-* No frontend implementation is included at this stage.
+* Ensure the backend is running on port 8000 for the frontend to communicate correctly.
 * Do not commit `.env` file or API keys to version control.
+
+---
+
+## 📌 Author
+
+Nikunj Jadav
 
 ---
 

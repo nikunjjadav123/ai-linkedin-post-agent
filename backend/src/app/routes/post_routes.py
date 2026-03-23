@@ -1,3 +1,4 @@
+import uuid
 from fastapi import APIRouter, HTTPException
 from app.nodes import (
     evaluate_linkedin_post,
@@ -18,6 +19,9 @@ from app.schemas.schema import (
     HooksResponse,
     HashtagsRequest,
     HashtagsResponse,
+    WorkflowStartRequest,
+    WorkflowResumeRequest,
+    WorkflowStateResponse,
 )
 
 # -------------------------------
@@ -138,3 +142,62 @@ def publish_post(data: PublishRequest):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Post publishing failed: {str(e)}")
+
+
+# -------------------------------
+# 7. Stateful Workflow Start
+# -------------------------------
+@router.post("/workflow/run", response_model=WorkflowStateResponse)
+def run_workflow(data: WorkflowStartRequest):
+    try:
+        from app.workflows.linkedin_workflow import app_graph
+        graph = app_graph()
+        thread_id = str(uuid.uuid4())
+        config = {"configurable": {"thread_id": thread_id}}
+        
+        # Start graph
+        result = graph.invoke({"topic": data.topic}, config=config)
+        
+        # Get state
+        state_obj = graph.get_state(config)
+        next_node = list(state_obj.next)
+        is_finished = len(next_node) == 0
+        
+        return WorkflowStateResponse(
+            thread_id=thread_id,
+            state=state_obj.values,
+            next_node=next_node,
+            is_finished=is_finished
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Workflow run failed: {str(e)}")
+
+# -------------------------------
+# 8. Stateful Workflow Resume
+# -------------------------------
+@router.post("/workflow/resume", response_model=WorkflowStateResponse)
+def resume_workflow(data: WorkflowResumeRequest):
+    try:
+        from app.workflows.linkedin_workflow import app_graph
+        graph = app_graph()
+        config = {"configurable": {"thread_id": data.thread_id}}
+        
+        # Update state with human input
+        graph.update_state(config, data.updates)
+        
+        # Resume graph
+        result = graph.invoke(None, config=config)
+        
+        # Get state
+        state_obj = graph.get_state(config)
+        next_node = list(state_obj.next)
+        is_finished = len(next_node) == 0
+        
+        return WorkflowStateResponse(
+            thread_id=data.thread_id,
+            state=state_obj.values,
+            next_node=next_node,
+            is_finished=is_finished
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Workflow resume failed: {str(e)}")

@@ -135,3 +135,30 @@ class HashtagsResponse(BaseSchema):
         ...,
         description="List of generated hashtags for the post"
     )
+
+# -------------------------------
+# Stateful Workflow Schemas
+# -------------------------------
+class WorkflowStartRequest(BaseSchema):
+    topic: str = Field(
+        ...,
+        min_length=3,
+        description="Topic to start the LangGraph workflow"
+    )
+
+class WorkflowResumeRequest(BaseSchema):
+    thread_id: str = Field(
+        ...,
+        description="Thread ID to resume"
+    )
+    updates: dict = Field(
+        ...,
+        description="Human-in-the-loop state updates"
+    )
+
+class WorkflowStateResponse(BaseSchema):
+    thread_id: str = Field(...)
+    state: dict = Field(...)
+    next_node: List[str] = Field(...)
+    is_finished: bool = Field(...)
+    status: str = Field(default="success")
