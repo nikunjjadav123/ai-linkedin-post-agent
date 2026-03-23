@@ -1,10 +1,20 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from app.routes.post_routes import router
 
 app = FastAPI(
     title="LinkedIn Content Automation API",
     description="AI-powered LinkedIn content generation, evaluation, and publishing system",
     version="1.0.0"
+)
+
+# Allow CORS for frontend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Adjust this in production, e.g., ["http://localhost:5173"]
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # Include single unified router
