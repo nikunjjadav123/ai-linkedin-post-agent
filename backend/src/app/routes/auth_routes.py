@@ -14,7 +14,7 @@ import urllib.parse
 @router.get("/url")
 def get_linkedin_auth_url():
     client_id = os.getenv("LINKEDIN_CLIENT_ID")
-    redirect_uri = os.getenv("LINKEDIN_REDIRECT_URI", "http://localhost:5173/auth/callback")
+    redirect_uri = os.getenv("LINKEDIN_REDIRECT_URI", "https://ai-linkedin-post-agent.vercel.app/auth/callback")
     
     if not client_id:
         raise HTTPException(status_code=500, detail="LINKEDIN_CLIENT_ID not configured")
@@ -39,7 +39,7 @@ def get_linkedin_auth_url():
 def handle_linkedin_callback(code: str = Query(...)):
     client_id = os.getenv("LINKEDIN_CLIENT_ID")
     client_secret = os.getenv("LINKEDIN_CLIENT_SECRET")
-    redirect_uri = os.getenv("LINKEDIN_REDIRECT_URI", "http://localhost:5173/auth/callback")
+    redirect_uri = os.getenv("LINKEDIN_REDIRECT_URI", "https://ai-linkedin-post-agent.vercel.app/auth/callback")
     
     if not client_id or not client_secret:
         raise HTTPException(status_code=500, detail="LinkedIn credentials not configured")
