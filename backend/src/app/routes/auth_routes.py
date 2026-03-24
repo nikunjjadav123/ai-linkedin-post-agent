@@ -9,6 +9,8 @@ class LinkedInAuthResponse(BaseModel):
     linkedin_token: str
     linkedin_person_id: str
 
+import urllib.parse
+
 @router.get("/url")
 def get_linkedin_auth_url():
     client_id = os.getenv("LINKEDIN_CLIENT_ID")
@@ -21,11 +23,13 @@ def get_linkedin_auth_url():
     # Using v2 scopes 'openid profile w_member_social email'
     scope = "w_member_social profile openid"
     
+    encoded_redirect_uri = urllib.parse.quote(redirect_uri, safe='')
+    
     url = (
         f"https://www.linkedin.com/oauth/v2/authorization?"
         f"response_type=code&"
         f"client_id={client_id}&"
-        f"redirect_uri={redirect_uri}&"
+        f"redirect_uri={encoded_redirect_uri}&"
         f"scope={scope.replace(' ', '%20')}"
     )
     
