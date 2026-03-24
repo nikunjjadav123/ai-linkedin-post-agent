@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Optional, List
 
 
@@ -136,15 +136,26 @@ class HashtagsResponse(BaseSchema):
         description="List of generated hashtags for the post"
     )
 
+
 # -------------------------------
 # Stateful Workflow Schemas
 # -------------------------------
 class WorkflowStartRequest(BaseSchema):
-    topic: str = Field(
+    input: str = Field(
         ...,
         min_length=3,
-        description="Topic to start the LangGraph workflow"
+        description="Input (e.g., Topic) to start the LangGraph workflow"
     )
+    user_id: Optional[str] = None
+    context: Optional[dict] = None
+
+    @field_validator('input')
+    @classmethod
+    def validate_input_words(cls, v: str) -> str:
+        words = v.strip().split()
+        if len(words) < 3:
+            raise ValueError("Topic must contain at least 3 words.")
+        return v
 
 class WorkflowResumeRequest(BaseSchema):
     thread_id: str = Field(

@@ -1,4 +1,4 @@
-from app.prompts.evalute_prompt import evalute_prompt
+from app.prompts.evaluate_prompt import evaluate_prompt
 from app.schemas.state import LinkedInState
 from app.services import get_llm
 import json
@@ -6,7 +6,7 @@ import json
 def evaluate_linkedin_post(state:LinkedInState)-> LinkedInState:
 
     
-    formatted_prompt = evalute_prompt.format_messages(
+    formatted_prompt = evaluate_prompt.format_messages(
         linkedin_post= state["linkedin_post"]
     )
     response = get_llm().invoke(formatted_prompt)

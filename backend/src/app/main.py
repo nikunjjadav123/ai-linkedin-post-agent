@@ -13,6 +13,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "https://ai-linkedin-post-agent.vercel.app",
+        "http://localhost:5173",
     ],
     allow_origin_regex=r"https://.*\.vercel\.app",
     allow_credentials=True,

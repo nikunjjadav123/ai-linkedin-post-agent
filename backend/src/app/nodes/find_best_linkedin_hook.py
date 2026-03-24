@@ -13,12 +13,13 @@ def find_best_linkedin_hook(state: LinkedInState) -> LinkedInState:
             "score": 0
         }
 
+    # Use max() with a key that handles dictionary access safely
     best_hook_obj = max(
         hooks,
-        key=lambda x: (x.score, len(x.hook))
+        key=lambda x: (x.get("score", 0), len(x.get("hook", "")))
     )
 
     return {
-        "the_best_hook": best_hook_obj.hook,
-        "score": best_hook_obj.score
+        "the_best_hook": best_hook_obj.get("hook", ""),
+        "score": best_hook_obj.get("score", 0)
     }

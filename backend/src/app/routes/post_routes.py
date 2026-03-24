@@ -151,12 +151,13 @@ def publish_post(data: PublishRequest):
 def run_workflow(data: WorkflowStartRequest):
     try:
         from app.workflows.linkedin_workflow import app_graph
+        
         graph = app_graph()
         thread_id = str(uuid.uuid4())
         config = {"configurable": {"thread_id": thread_id}}
         
         # Start graph
-        result = graph.invoke({"topic": data.topic}, config=config)
+        result = graph.invoke({"topic": data.input}, config=config)
         
         # Get state
         state_obj = graph.get_state(config)

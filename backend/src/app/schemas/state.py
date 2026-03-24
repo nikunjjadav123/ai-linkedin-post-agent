@@ -2,7 +2,7 @@ from typing import TypedDict,Optional,List
 
 class LinkedInState(TypedDict):
     topic:str
-    hooks: List[str]
+    hooks: List[dict]
     the_best_hook:str
     linkedin_post:str
     score:int

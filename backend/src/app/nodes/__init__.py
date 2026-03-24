@@ -1,4 +1,4 @@
-from .evalute_post import evaluate_linkedin_post
+from .evaluate_post import evaluate_linkedin_post
 from .generate_post import generate_linkedin_post
 from .publish_post import post_linkedin_after_approve
 from .generate_linkedin_hooks import generate_linkedin_hooks

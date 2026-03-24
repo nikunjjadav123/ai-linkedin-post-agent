@@ -1,6 +1,6 @@
 from langchain_core.prompts import ChatPromptTemplate
 
-evalute_prompt = ChatPromptTemplate(
+evaluate_prompt = ChatPromptTemplate(
     [
         ("system", "You are a strict JSON generator and LinkedIn content evaluator."),
         ("human", """
