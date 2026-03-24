@@ -157,7 +157,11 @@ def run_workflow(data: WorkflowStartRequest):
         config = {"configurable": {"thread_id": thread_id}}
         
         # Start graph
-        result = graph.invoke({"topic": data.input}, config=config)
+        result = graph.invoke({
+            "topic": data.input,
+            "linkedin_token": data.linkedin_token,
+            "linkedin_person_id": data.linkedin_person_id
+        }, config=config)
         
         # Get state
         state_obj = graph.get_state(config)
@@ -183,8 +187,14 @@ def resume_workflow(data: WorkflowResumeRequest):
         graph = app_graph()
         config = {"configurable": {"thread_id": data.thread_id}}
         
-        # Update state with human input
-        graph.update_state(config, data.updates)
+        # Update state with human input and latest tokens
+        updates = data.updates.copy()
+        if data.linkedin_token:
+            updates["linkedin_token"] = data.linkedin_token
+        if data.linkedin_person_id:
+            updates["linkedin_person_id"] = data.linkedin_person_id
+            
+        graph.update_state(config, updates)
         
         # Resume graph
         result = graph.invoke(None, config=config)

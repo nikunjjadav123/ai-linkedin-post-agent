@@ -6,8 +6,16 @@ def post_linkedin_after_approve(state: LinkedInState) -> LinkedInState:
         
         linkedin_post = state["linkedin_post"]
         hashtags = state.get("hashtags")
+        linkedin_token = state.get("linkedin_token")
+        linkedin_person_id = state.get("linkedin_person_id")
         
-        result = post_to_linkedin_api(linkedin_post, hashtags=hashtags)
+        if not linkedin_token or not linkedin_person_id:
+            return {
+                "status": "failed",
+                "message": "Missing LinkedIn authentication tokens"
+            }
+        
+        result = post_to_linkedin_api(linkedin_post, access_token=linkedin_token, person_id=linkedin_person_id, hashtags=hashtags)
 
         try:
 

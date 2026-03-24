@@ -5,12 +5,13 @@ import os
 from typing import List, Optional
 
 
-def post_to_linkedin_api(linkedin_post: str, hashtags: Optional[List[str]] = None):
+def post_to_linkedin_api(linkedin_post: str, access_token: str, person_id: str, hashtags: Optional[List[str]] = None):
 
         url = "https://api.linkedin.com/v2/ugcPosts"
 
-        access_token = os.getenv("LINKEDIN_ACCESS_TOKEN")
-        person_id = os.getenv("LINKEDIN_PERSON_ID")
+        if not access_token or not person_id:
+            raise ValueError("LinkedIn credentials (access_token, person_id) must be provided.")
+
 
         # Append hashtags to post if provided
         post_content = linkedin_post

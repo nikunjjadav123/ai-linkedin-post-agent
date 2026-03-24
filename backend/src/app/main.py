@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from src.app.routes.post_routes import router
+# Removing old import hook
 
 app = FastAPI(
     title="LinkedIn Content Automation API",
@@ -21,8 +21,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+from src.app.routes.post_routes import router as post_router
+from src.app.routes.auth_routes import router as auth_router
+
 # Include single unified router
-app.include_router(router)
+app.include_router(post_router)
+app.include_router(auth_router)
 
 # def main():
 

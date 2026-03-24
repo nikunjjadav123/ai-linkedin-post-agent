@@ -148,6 +148,8 @@ class WorkflowStartRequest(BaseSchema):
     )
     user_id: Optional[str] = None
     context: Optional[dict] = None
+    linkedin_token: Optional[str] = None
+    linkedin_person_id: Optional[str] = None
 
     @field_validator('input')
     @classmethod
@@ -166,6 +168,8 @@ class WorkflowResumeRequest(BaseSchema):
         ...,
         description="Human-in-the-loop state updates"
     )
+    linkedin_token: Optional[str] = None
+    linkedin_person_id: Optional[str] = None
 
 class WorkflowStateResponse(BaseSchema):
     thread_id: str = Field(...)
