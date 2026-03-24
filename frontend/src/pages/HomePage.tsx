@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { Bot, Sparkles, CheckCircle, Send, PenTool } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Bot, Sparkles, CheckCircle, Send, PenTool, LogIn } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { Textarea } from '../components/ui/Textarea';
 import { Badge } from '../components/ui/Badge';
-import { runWorkflow, resumeWorkflow, type WorkflowResponse } from '../services/api';
+import { getAuthUrl, runWorkflow, resumeWorkflow, type WorkflowResponse } from '../services/api';
 
 export default function HomePage() {
   const [step, setStep] = useState(1);
@@ -22,6 +22,28 @@ export default function HomePage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [publishResult, setPublishResult] = useState<any>(null);
   const [validationError, setValidationError] = useState<string | null>(null);
+
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthLoading, setIsAuthLoading] = useState(false);
+  
+  useEffect(() => {
+    const token = localStorage.getItem('linkedin_token');
+    if (token) {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
+  const handleLogin = async () => {
+    setIsAuthLoading(true);
+    try {
+      const { url } = await getAuthUrl();
+      window.location.href = url;
+    } catch (err) {
+      console.error("Failed to fetch auth URL", err);
+      alert("Failed to initiate LinkedIn Login");
+      setIsAuthLoading(false);
+    }
+  };
 
   const handleStateResponse = (response: WorkflowResponse) => {
     setThreadId(response.thread_id);
@@ -150,10 +172,30 @@ export default function HomePage() {
           ))}
         </div>
 
-        <Card className="shadow-lg border-0 ring-1 ring-slate-200/50">
-          
-          {/* STEP 1: TOPIC */}
-          {step === 1 && (
+        {!isAuthenticated ? (
+          <Card className="shadow-lg border-0 ring-1 ring-slate-200/50 text-center py-12">
+            <CardHeader>
+              <div className="flex justify-center mb-4">
+                <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center">
+                  <LogIn className="w-8 h-8" />
+                </div>
+              </div>
+              <CardTitle className="text-2xl">Connect Your Account</CardTitle>
+              <CardDescription>
+                Authenticate with LinkedIn to empower the agent to publish directly to your individual profile.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex justify-center pt-6">
+              <Button onClick={handleLogin} isLoading={isAuthLoading} size="lg" className="bg-[#0A66C2] hover:bg-[#004182]">
+                Login with LinkedIn
+              </Button>
+            </CardContent>
+          </Card>
+        ) : (
+          <Card className="shadow-lg border-0 ring-1 ring-slate-200/50">
+            
+            {/* STEP 1: TOPIC */}
+            {step === 1 && (
             <>
               <CardHeader>
                 <CardTitle className="text-2xl flex items-center gap-2">
@@ -328,6 +370,7 @@ export default function HomePage() {
           )}
 
         </Card>
+        )}
       </div>
     </div>
   );
