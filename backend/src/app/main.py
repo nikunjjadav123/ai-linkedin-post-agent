@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routes.post_routes import router
+from src.app.routes.post_routes import router
 
 app = FastAPI(
     title="LinkedIn Content Automation API",
