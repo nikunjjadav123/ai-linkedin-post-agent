@@ -1,5 +1,5 @@
 import axios from 'axios';
-console.log("API URL:", import.meta.env.VITE_BACKEND_URL);
+// console.log("API URL:", import.meta.env.VITE_BACKEND_URL);
 const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
 
 const api = axios.create({
@@ -9,6 +9,7 @@ const api = axios.create({
   },
 });
 
+
 export interface WorkflowResponse {
   thread_id: string;
   state: any;
@@ -17,9 +18,12 @@ export interface WorkflowResponse {
 }
 
 export const runWorkflow = async (topic: string): Promise<WorkflowResponse> => {
-  const { data } = await api.post('/workflow/run', { topic });
+  const { data } = await api.post('/workflow/run', {
+    input: topic
+  });
   return data;
 };
+
 
 export const resumeWorkflow = async (threadId: string, updates: Record<string, any>): Promise<WorkflowResponse> => {
   const { data } = await api.post('/workflow/resume', {

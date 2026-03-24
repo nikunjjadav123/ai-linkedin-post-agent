@@ -21,6 +21,7 @@ export default function HomePage() {
   
   const [isProcessing, setIsProcessing] = useState(false);
   const [publishResult, setPublishResult] = useState<any>(null);
+  const [validationError, setValidationError] = useState<string | null>(null);
 
   const handleStateResponse = (response: WorkflowResponse) => {
     setThreadId(response.thread_id);
@@ -46,15 +47,33 @@ export default function HomePage() {
     }
   };
 
+  const validateTopic = (val: string) => {
+    if (val.trim().length < 3) {
+      return 'Topic must be at least 3 characters long.';
+    }
+    const words = val.trim().split(/\s+/).filter(Boolean);
+    if (words.length < 3) {
+      return 'Please enter a more descriptive topic (at least 3 words).';
+    }
+    return null;
+  };
+
   const handleStartWorkflow = async () => {
-    if (!topic) return;
+    const error = validateTopic(topic);
+    if (error) {
+      setValidationError(error);
+      return;
+    }
+
+    setValidationError(null);
     setIsProcessing(true);
     try {
       const response = await runWorkflow(topic);
       handleStateResponse(response);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to start workflow', error);
-      alert('Failed to start workflow. Ensure the backend is running.');
+      const backendMsg = error.response?.data?.detail?.[0]?.msg || 'Failed to start workflow.';
+      alert(`Error: ${backendMsg}`);
     } finally {
       setIsProcessing(false);
     }
@@ -148,11 +167,17 @@ export default function HomePage() {
               <CardContent>
                 <Input
                   value={topic}
-                  onChange={(e) => setTopic(e.target.value)}
+                  onChange={(e) => {
+                    setTopic(e.target.value);
+                    if (validationError) setValidationError(null);
+                  }}
                   placeholder="e.g. The importance of Checkpointing in LangGraph..."
-                  className="text-lg py-6"
+                  className={`text-lg py-6 ${validationError ? 'border-red-500 ring-red-200' : ''}`}
                   autoFocus
                 />
+                {validationError && (
+                  <p className="mt-2 text-sm text-red-500 font-medium">{validationError}</p>
+                )}
               </CardContent>
               <CardFooter className="flex justify-end border-t border-slate-100 pt-6">
                 <Button 
