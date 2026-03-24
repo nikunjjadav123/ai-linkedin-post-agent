@@ -11,7 +11,10 @@ app = FastAPI(
 # Allow CORS for frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://ai-linkedin-post-agent-midcws406-aimls-projects-702b7297.vercel.app"],  # Adjust this in production, e.g., ["http://localhost:5173"]
+    allow_origins=[
+        "https://ai-linkedin-post-agent.vercel.app",
+    ],
+    allow_origin_regex=r"https://.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
