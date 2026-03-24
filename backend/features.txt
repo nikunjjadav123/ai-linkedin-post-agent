@@ -1,15 +1,15 @@
 Features
 
-1) Pydantic Schema use 
-2) Utils functions
-3) FAST API Call
+1) Pydantic Schema use -> Done
+2) Utils functions -> Done
+3) FAST API Call -> Done
 4) Multi-Platform Generator
 5) AI Content Critic
-6) Hook generator
+6) Hook generator -> Done
 7) Tone selection
 8) Feedback-based evaluation
-9) Hashtag generator
-
+9) Hashtag generator -> Done
+10) need to publish linkedin post in proper format -> Done
 
 Future Topics
 
