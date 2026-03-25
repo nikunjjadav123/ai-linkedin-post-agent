@@ -154,7 +154,7 @@ def run_workflow(data: WorkflowStartRequest):
         
         graph = app_graph()
         thread_id = str(uuid.uuid4())
-        config = {"configurable": {"thread_id": thread_id}}
+        config = {"configurable": {"thread_id": thread_id}, "run_name": "linkedin_agent_run"}
         
         # Start graph
         result = graph.invoke({
@@ -185,7 +185,7 @@ def resume_workflow(data: WorkflowResumeRequest):
     try:
         from app.workflows.linkedin_workflow import app_graph
         graph = app_graph()
-        config = {"configurable": {"thread_id": data.thread_id}}
+        config = {"configurable": {"thread_id": data.thread_id}, "run_name": "linkedin_agent_resume"}
         
         # Update state with human input and latest tokens
         updates = data.updates.copy()
