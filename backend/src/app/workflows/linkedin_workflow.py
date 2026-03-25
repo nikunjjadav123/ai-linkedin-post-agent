@@ -47,4 +47,4 @@ def app_graph():
         interrupt_before=["Generate LinkedIn Post Based on Best Hook", "Post LinkedIn After Approve"]
     )
 
-    return workflow
+    return workflow.with_config({"run_name": "LinkedIn Post Agent"})
