@@ -10,7 +10,7 @@ def generate_linkedin_hooks(state:LinkedInState)-> LinkedInState:
         topic=state["topic"]
     )
 
-    response = get_llm().invoke(formatted_prompt)
+    response = get_llm().invoke(formatted_prompt, config={"run_name": "generate_hooks"})
     content = response.content
 
     try:

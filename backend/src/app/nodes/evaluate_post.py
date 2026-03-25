@@ -9,7 +9,7 @@ def evaluate_linkedin_post(state:LinkedInState)-> LinkedInState:
     formatted_prompt = evaluate_prompt.format_messages(
         linkedin_post= state["linkedin_post"]
     )
-    response = get_llm().invoke(formatted_prompt)
+    response = get_llm().invoke(formatted_prompt, config={"run_name": "evaluate_post"})
     parsed = json.loads(response.content)
 
     return { 'linkedin_post':parsed["linkedin_post"],'score':parsed["score"],'feedback':parsed["feedback"] }

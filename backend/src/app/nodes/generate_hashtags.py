@@ -7,7 +7,7 @@ def generate_hashtags(state: LinkedInState) -> LinkedInState:
     formatted_prompt = generate_hashtags_prompt.format_messages(
         linkedin_post=state["linkedin_post"]
     )
-    response = get_llm().invoke(formatted_prompt)
+    response = get_llm().invoke(formatted_prompt, config={"run_name": "generate_hashtags"})
     parsed = json.loads(response.content)
 
     return {"hashtags": parsed.get("hashtags", [])}
