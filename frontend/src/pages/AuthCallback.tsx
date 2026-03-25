@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { verifyAuthCode } from '../services/api';
 
@@ -6,8 +6,12 @@ export default function AuthCallback() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
+  const hasFired = useRef(false);
 
   useEffect(() => {
+    if (hasFired.current) return;
+    hasFired.current = true;
+
     const code = searchParams.get('code');
     const err = searchParams.get('error');
 

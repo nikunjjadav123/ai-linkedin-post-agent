@@ -45,6 +45,12 @@ export default function HomePage() {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('linkedin_token');
+    localStorage.removeItem('linkedin_person_id');
+    setIsAuthenticated(false);
+  };
+
   const handleStateResponse = (response: WorkflowResponse) => {
     setThreadId(response.thread_id);
     const state = response.state;
@@ -134,8 +140,15 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-10">
+      <div className="max-w-4xl mx-auto relative">
+        {isAuthenticated && (
+          <div className="absolute top-0 right-0">
+            <Button variant="outline" size="sm" onClick={handleLogout} className="text-slate-500 hover:text-red-600 hover:border-red-200 hover:bg-red-50 transition-colors">
+              Logout
+            </Button>
+          </div>
+        )}
+        <div className="text-center mb-10 pt-4">
           <h1 className="text-4xl font-extrabold text-slate-900 flex items-center justify-center gap-3">
             <Sparkles className="w-8 h-8 text-primary-600" />
             Stateful Agentic LinkedIn Creator
