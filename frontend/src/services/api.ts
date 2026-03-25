@@ -18,12 +18,14 @@ export interface WorkflowResponse {
 }
 
 export const getAuthUrl = async (): Promise<{ url: string }> => {
-  const { data } = await axios.get(`${API_BASE_URL}/auth/linkedin/url`);
+  const redirectUri = `${window.location.origin}/auth/callback`;
+  const { data } = await axios.get(`${API_BASE_URL}/auth/linkedin/url?redirect_uri=${encodeURIComponent(redirectUri)}`);
   return data;
 };
 
 export const verifyAuthCode = async (code: string): Promise<{ linkedin_token: string, linkedin_person_id: string }> => {
-  const { data } = await axios.post(`${API_BASE_URL}/auth/linkedin/callback?code=${code}`);
+  const redirectUri = `${window.location.origin}/auth/callback`;
+  const { data } = await axios.post(`${API_BASE_URL}/auth/linkedin/callback?code=${code}&redirect_uri=${encodeURIComponent(redirectUri)}`);
   return data;
 };
 

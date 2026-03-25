@@ -12,9 +12,11 @@ class LinkedInAuthResponse(BaseModel):
 import urllib.parse
 
 @router.get("/url")
-def get_linkedin_auth_url():
+def get_linkedin_auth_url(redirect_uri: str = Query(None)):
     client_id = os.getenv("LINKEDIN_CLIENT_ID")
-    redirect_uri = os.getenv("LINKEDIN_REDIRECT_URI", "https://ai-linkedin-post-agent-m0dr8m214-aimls-projects-702b7297.vercel.app/auth/callback")
+    
+    if not redirect_uri:
+        redirect_uri = os.getenv("LINKEDIN_REDIRECT_URI", "https://ai-linkedin-post-agent-m0dr8m214-aimls-projects-702b7297.vercel.app/auth/callback")
     
     if not client_id:
         raise HTTPException(status_code=500, detail="LINKEDIN_CLIENT_ID not configured")
@@ -36,10 +38,12 @@ def get_linkedin_auth_url():
     return {"url": url}
 
 @router.post("/callback", response_model=LinkedInAuthResponse)
-def handle_linkedin_callback(code: str = Query(...)):
+def handle_linkedin_callback(code: str = Query(...), redirect_uri: str = Query(None)):
     client_id = os.getenv("LINKEDIN_CLIENT_ID")
     client_secret = os.getenv("LINKEDIN_CLIENT_SECRET")
-    redirect_uri = os.getenv("LINKEDIN_REDIRECT_URI", "https://ai-linkedin-post-agent-m0dr8m214-aimls-projects-702b7297.vercel.app/auth/callback")
+    
+    if not redirect_uri:
+        redirect_uri = os.getenv("LINKEDIN_REDIRECT_URI", "https://ai-linkedin-post-agent-m0dr8m214-aimls-projects-702b7297.vercel.app/auth/callback")
     
     if not client_id or not client_secret:
         raise HTTPException(status_code=500, detail="LinkedIn credentials not configured")
