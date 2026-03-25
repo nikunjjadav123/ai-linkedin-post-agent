@@ -11,3 +11,5 @@ class LinkedInState(TypedDict):
     linkedin_post_id: Optional[str]
     feedback: str
     hashtags: Optional[List[str]]
+    linkedin_token: Optional[str]
+    linkedin_person_id: Optional[str]
