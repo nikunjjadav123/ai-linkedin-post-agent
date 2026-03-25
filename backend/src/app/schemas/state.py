@@ -1,6 +1,7 @@
 from typing import TypedDict,Optional,List
 
-class LinkedInState(TypedDict):
+class LinkedInState(TypedDict, total=False):
+    input: Optional[dict]
     topic:str
     hooks: List[dict]
     the_best_hook:str

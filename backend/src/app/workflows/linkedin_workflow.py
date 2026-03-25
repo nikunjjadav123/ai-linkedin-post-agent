@@ -11,10 +11,21 @@ from app.workflows.decision import decide_approve_improve
 
 memory = MemorySaver()
 
+def inject_input(state):
+    # Support both dataset and manual input
+    if "topic" in state:
+        return {"topic": state["topic"]}
+
+    input_data = state.get("input", {})
+    return {
+        "topic": input_data.get("topic", "")
+    }
+
 def app_graph():
 
     graph = StateGraph(LinkedInState)
 
+    graph.add_node("inject_input", inject_input)
     graph.add_node("Generate Hooks Based On Topic",generate_linkedin_hooks)
     graph.add_node("Find Best Hook Based On Score",find_best_linkedin_hook)
     graph.add_node("Generate LinkedIn Post Based on Best Hook",generate_linkedin_post)
@@ -22,7 +33,8 @@ def app_graph():
     graph.add_node("Generate Hashtags",generate_hashtags)
     graph.add_node("Post LinkedIn After Approve",post_linkedin_after_approve)
 
-    graph.add_edge(START,"Generate Hooks Based On Topic")
+    graph.add_edge(START, "inject_input")
+    graph.add_edge("inject_input", "Generate Hooks Based On Topic")
     graph.add_edge("Generate Hooks Based On Topic","Find Best Hook Based On Score")
     graph.add_edge("Find Best Hook Based On Score","Generate LinkedIn Post Based on Best Hook")
     graph.add_edge("Generate LinkedIn Post Based on Best Hook","Evaluate LinkedIn Post")
